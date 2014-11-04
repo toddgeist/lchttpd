@@ -12,4 +12,4 @@ This is for inter-process or inter-app communications.
 
 Credits
 =======
-The code for accepting socket connections and responding was copied from mchttpd.mc, an implementation of a web server written in MetaCard, and maintained by fouthword.com
+The code for accepting socket connections and responding was copied from mchttpd.mc, an implementation of a web server written in MetaCard, and maintained by fourthword.com
