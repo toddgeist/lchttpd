@@ -1,3 +1,0 @@
-On logme theData
-   put theData  &crlf after fld "log"
-end logme
