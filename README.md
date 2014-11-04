@@ -18,6 +18,6 @@ Installation
 ======
 This code is maintained using lcVCS. If you want to build from srouce or contribute to this project you will need that plugin.  
 OR  
-You can download the stacks from the wiki.
+You can download the stacks from the [wiki](https://github.com/toddgeist/lchttpd/wiki).
 
 Take a look at the lcHTTPdTest.livecode for how to use it in your project.
