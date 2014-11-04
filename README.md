@@ -21,3 +21,8 @@ OR
 You can download the stacks from the [wiki](https://github.com/toddgeist/lchttpd/wiki).
 
 Take a look at the lcHTTPdTest.livecode for how to use it in your project.
+
+Video Intro
+======
+
+http://youtu.be/cfHLgHCsZTc
