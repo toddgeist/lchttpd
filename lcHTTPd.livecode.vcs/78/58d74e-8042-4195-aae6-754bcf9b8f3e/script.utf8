@@ -1,10 +1,16 @@
-local theSocket, requestArray 
+local theSocket, requestArray, theServerIsRunning
 
 local theRouter, theRequest, theResponse, theMiddleWare, theHandler
 
 local theMiddleWarehandlers
 local middleWareIndex
 
+setProp serverIsRunning theValue
+   put theValue into theServerIsRunning
+end serverIsRunning
+getProp serverIsRunning
+   return theServerIsRunning
+end serverIsRunning
 
 setProp routerObject theValue
    put theValue into theRouter
@@ -34,7 +40,7 @@ On StartServer
    put the Long ID of btn "Response" into theResponse
    put the Long ID of btn "Request" into theRequest
    
-   if the serverIsRunning of me is not true then
+   if the serverIsRunning of me is not true or the serverIsRunning of me is Empty then
       accept connections on port (the portToListenTo of me) with message "newConnection"
       if the result is not empty then answer info the result
       set the serverIsRunning of me to true
@@ -62,7 +68,7 @@ on readFromSocket theIPAddress, theData
    set the IPAddress of theRequest to theIPAddress[1]
    set the port of theRequest to theIPAddress[2]
    set the method of theRequest to word 1 of theData
-   put the method of theRequest
+
    
    put word 2 of theData into theReqInfo
    split theReqInfo by "?"

@@ -9,7 +9,7 @@
     },
     "customKeys": {
       "portToListenTo": "1337",
-      "serverIsRunning": "true"
+      "serverIsRunning": ""
     }
   },
   "properties": {

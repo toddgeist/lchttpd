@@ -25,7 +25,7 @@
     "hScroll": "0",
     "hScrollbar": "false",
     "hilitedLines": "",
-    "htmlText": "<p>sending to: 127.0.0.1&#13;</p>\n<p>GET/a/b/c&#13;</p>\n<p>sending to: 127.0.0.1&#13;</p>\n<p>GET&#13;</p>\n<p>sending to: 127.0.0.1&#13;</p>\n<p>GET&#13;</p>\n<p>sending to: 127.0.0.1&#13;</p>\n<p>GET&#13;</p>\n<p>sending to: 127.0.0.1&#13;</p>\n<p>GET&#13;</p>\n<p>sending to: 127.0.0.1&#13;</p>\n<p>receiving...&#13;</p>\n<p></p>",
+    "htmlText": "<p>sending to: 127.0.0.1&#13;</p>\n<p>GET/a/b/c&#13;</p>\n<p></p>",
     "id": "1017",
     "ink": "srcCopy",
     "listBehavior": "false",
