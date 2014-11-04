@@ -1,8 +1,6 @@
 on goNext theError
-   dispatch "nextMiddleWare" to btn "Server" with theError
+   put the serverObject of me into theServer
+   dispatch "nextMiddleWare" to theServer with theError
 end goNext
 
 
-function r
-   return "r"
-end r

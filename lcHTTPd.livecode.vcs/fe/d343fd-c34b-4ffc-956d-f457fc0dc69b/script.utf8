@@ -28,6 +28,9 @@ end port
 setProp path theValue
    put theValue into thePath
 end path
+getProp path
+   return thePath
+end path
 
 
 setProp method theValue

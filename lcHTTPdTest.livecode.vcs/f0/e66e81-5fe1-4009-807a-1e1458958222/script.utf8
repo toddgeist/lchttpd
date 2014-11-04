@@ -1,0 +1,25 @@
+on startHTTPServer
+   
+   -- get a reference to the server Button 
+   
+   put the long id of stack "lcHTTPd" into lchttpdStack
+   if lchttpdStack is Empty then
+      answer "stack 'lcHTTPd' needs to be open."
+      exit to top
+   end if
+   
+   put the long id of btn "server" of card 1 of lchttpdStack into theServerObject
+   
+
+   
+   set the routerObject of theServerObject to long id of btn "Router"
+   set the middleWareObject of theServerObject to long id of btn "MiddleWare"
+   
+   dispatch startServer to theServerObject
+   
+end startHTTPServer
+
+
+On addToLog theData
+   put theData  &crlf before fld "log"
+end addToLog

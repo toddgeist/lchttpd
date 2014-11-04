@@ -5,11 +5,34 @@ local theRouter, theRequest, theResponse, theMiddleWare, theHandler
 local theMiddleWarehandlers
 local middleWareIndex
 
+
+setProp routerObject theValue
+   put theValue into theRouter
+end routerObject
+getProp routerObject
+   return theRouter
+end routerObject
+
+setProp middleWareObject objectRef
+   
+   --lets attach the behavior to the object
+   put the long id of the btn "MiddleWareBehavior" into theMiddleWareBehavior
+   set the behavior of objectRef to theMiddleWareBehavior
+   
+   --attach the server to the behavior, so it can call back.
+   set the serverObject of objectRef to the long id of me
+   
+   --then register the MiddleWare with this server
+   put objectRef into theMiddleWare
+   
+end middleWareObject
+getProp middleWareObject
+   return theMiddleWare
+end middleWareObject
+
 On StartServer
-   put the Long ID of btn "Router" into theRouter
    put the Long ID of btn "Response" into theResponse
    put the Long ID of btn "Request" into theRequest
-   put the Long ID of btn "MiddleWare" into theMiddleWare
    
    if the serverIsRunning of me is not true then
       accept connections on port (the portToListenTo of me) with message "newConnection"
@@ -17,7 +40,7 @@ On StartServer
       set the serverIsRunning of me to true
       --send "serverStatusChanged" to me
    else
-
+      set the serverIsRunning of me to false
    end if
    
 end StartServer
@@ -34,7 +57,7 @@ end newConnection
 
 
 on readFromSocket theIPAddress, theData
-
+   
    split theIPAddress by ":"
    set the IPAddress of theRequest to theIPAddress[1]
    set the port of theRequest to theIPAddress[2]
@@ -49,12 +72,12 @@ on readFromSocket theIPAddress, theData
    
    split theQuery by "?" and "="
    set the query of theRequest to theQuery
+   set the path of theRequest to theRoute
    
-   put theRoute into thePath
    split theRoute by "/"
    combine theRoute with "."
    put the method of theRequest & theRoute into theHandler
-      
+   
    invokeMiddleWareStack
    
    sendResponse
