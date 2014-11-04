@@ -1,0 +1,17 @@
+{
+  "build path": "",
+  "name": "lcHTTPd",
+  "plugins": [
+    "cRevGeneral",
+    "cREVGeometryCache",
+    "cRevStandaloneSettings",
+    "dataviewProps",
+    "dgProps",
+    "GLX2"
+  ],
+  "resource paths": "",
+  "stackFiles": [
+    "lcHTTPd.livecode",
+    "lcHTTPdTest.livecode"
+  ]
+}

@@ -1,0 +1,48 @@
+local theMethod, theQuery, theIPAddress, thePort, thePath
+
+on setDefaults
+   put empty into theMethod
+   put empty into theQuery
+   put empty into theIPAddress
+   put empty into thePort
+   put empty into thePath
+end setDefaults
+
+
+setProp IPAddress theValue
+   put theValue into theIPAddress
+end IPAddress
+
+getProp IPAddress
+   return theIPAddress
+end IPAddress
+
+setProp port theValue
+   put theValue into thePort
+end port
+
+getProp port
+   return thePort
+end port
+
+setProp path theValue
+   put theValue into thePath
+end path
+
+
+setProp method theValue
+   put theValue into theMethod
+end method
+
+getProp method
+   return theMethod
+end method
+
+setProp query theValue
+   put theValue into theQuery
+end query
+
+getProp query
+   return theQuery
+end query
+

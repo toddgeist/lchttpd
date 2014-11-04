@@ -1,0 +1,37 @@
+/**
+*  Router
+*
+*  handlers all called in this script based on matching a routeFor ex.
+*
+*  IF a GET request is received at /my/first/route then a message GET.my.first.route will be sent here
+*  the pattern is the method name followed by the path with dots replacing the slash
+*  
+*  the hander will get two parameters. The first is the long id of the request object. The second
+*  is the long id of the response Object. 
+*  
+*  you set the props on the response Object you want and the server will send it
+*/
+
+
+
+
+
+
+on GET.a.b.c theRequest, theResponse
+   
+   
+   put the query of theRequest into theQuery
+   
+   set the httpStatus of theResponse to 200
+   set the conteType of theResponse to "text/html"
+   set the body of theResponse to "hello " & theQuery["firstName"]
+   
+   
+end GET.a.b.c
+
+
+
+
+
+
+

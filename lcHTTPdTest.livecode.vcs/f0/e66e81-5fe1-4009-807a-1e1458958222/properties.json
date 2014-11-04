@@ -1,0 +1,24 @@
+{
+  "UUID": "f0e66e81-5fe1-4009-807a-1e1458958222",
+  "class": "com.runrev.engine.card",
+  "properties": {
+    "altId": "0",
+    "behavior": "",
+    "blendLevel": "0",
+    "borderWidth": "2",
+    "cantDelete": "false",
+    "colors": "\n\n\n\n\n\n\n",
+    "dontSearch": "false",
+    "id": "1002",
+    "ink": "srcCopy",
+    "mark": "false",
+    "name": "",
+    "patterns": "\n\n\n\n\n\n\n",
+    "rect": "0,0,400,400",
+    "showBorder": "false",
+    "textFont": "",
+    "textSize": "",
+    "textStyle": "",
+    "threeD": "true"
+  }
+}

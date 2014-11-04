@@ -1,0 +1,17 @@
+on mouseUp
+   
+   if the serverIsRunning of button "server" then
+      dispatch "stopServer" to button "server"
+   else
+      dispatch "startServer" to button "server"
+   end if
+   updateMyState
+end mouseUp
+
+on updateMyState
+   if the serverIsRunning of button "server" then
+      set the label of me to "Stop Server"
+   else
+      set the label of me to "Start Server"
+   end if
+end updateMyState

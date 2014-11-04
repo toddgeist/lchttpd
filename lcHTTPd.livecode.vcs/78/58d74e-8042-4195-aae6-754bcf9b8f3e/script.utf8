@@ -1,0 +1,152 @@
+local theSocket, requestArray 
+
+local theRouter, theRequest, theResponse, theMiddleWare, theHandler
+
+local theMiddleWarehandlers
+local middleWareIndex
+
+On StartServer
+   put the Long ID of btn "Router" into theRouter
+   put the Long ID of btn "Response" into theResponse
+   put the Long ID of btn "Request" into theRequest
+   put the Long ID of btn "MiddleWare" into theMiddleWare
+   
+   if the serverIsRunning of me is not true then
+      accept connections on port (the portToListenTo of me) with message "newConnection"
+      if the result is not empty then answer info the result
+      set the serverIsRunning of me to true
+      --send "serverStatusChanged" to me
+   else
+
+   end if
+   
+end StartServer
+
+on newConnection pSocket
+   put pSocket into theSocket
+   dispatch "setDefaults" to theRequest
+   dispatch "resetToDefaults" to theResponse
+   read from socket theSocket for 1 lines with message "readFromSocket"
+end newConnection
+
+
+
+
+
+on readFromSocket theIPAddress, theData
+
+   split theIPAddress by ":"
+   set the IPAddress of theRequest to theIPAddress[1]
+   set the port of theRequest to theIPAddress[2]
+   set the method of theRequest to word 1 of theData
+   put the method of theRequest
+   
+   put word 2 of theData into theReqInfo
+   split theReqInfo by "?"
+   put theReqInfo[1]into theRoute
+   put theReqInfo[2] into theQuery
+   put empty into theReqInfo
+   
+   split theQuery by "?" and "="
+   set the query of theRequest to theQuery
+   
+   put theRoute into thePath
+   split theRoute by "/"
+   combine theRoute with "."
+   put the method of theRequest & theRoute into theHandler
+      
+   invokeMiddleWareStack
+   
+   sendResponse
+   
+end readFromSocket
+
+
+on sendResponse
+   get the responseString of btn "response"
+   write it to socket theSocket with message "closeConnection"
+   exit to top  //  once we send we are done.  this should kill the current script stack
+end sendResponse
+
+
+
+on closeConnection
+    close socket theSocket
+end closeConnection
+
+
+on stopServer
+   get the openSockets
+   repeat with i=1 to the num of lines in it
+      close socket (line i of it)
+   end repeat
+   set the serverIsRunning of me to false
+end stopServer
+
+on setDefaults
+   set portToListenTo of me to 1337
+end setDefaults
+
+
+
+
+on invokeMiddlewareStack
+   put handlerNames(the script of theMiddleWare , "messages" ) into theMiddleWarehandlers
+   put 0 into middleWareIndex
+   nextMiddleWare
+end invokeMiddlewareStack
+
+on nextMiddleWare theError
+   
+   put the sendNow of theResponse into sendNow
+   
+   
+   add 1 to middleWareIndex
+   get line middleWareIndex of theMiddleWarehandlers
+   put it into theMessage
+   if it is not empty and it <> "goNext" and not sendNow then
+      dispatch theMessage to theMiddleWare with theRequest, theResponse
+   else
+      dispatch theHandler to theRouter with theRequest, theResponse
+      if it is not "handled" then
+         set the httpStatus of theResponse to 404
+      end if
+   end if
+end nextMiddleWare
+
+
+
+function handlerNames pScript,pHandlerType
+    switch pHandlerType
+        case "message" 
+            ## list the message handlers
+            filter pScript with "on*"
+            break
+        case "function" 
+            ## list the function handlers
+            filter pScript with "function*"
+            break
+        case "setProp" 
+            ## list the setProp handlers
+            filter pScript with "setProp*"
+            break
+        case "getProp" 
+            ## list the getProp handlers
+            filter pScript with "getProp*"
+            break
+        default 
+            ## list all the handlers, if no type specified
+            filter pScript with "end*"
+    end switch
+
+    repeat with x = 1 to the number of lines of pScript
+        ## word 2 of the first or last line of a handler is the handler name:
+        put word 2 of line x of pScript into line x of pScript
+    end repeat
+
+    if pScript is empty then 
+        return "(None found)"
+    else
+        return pScript
+    end if
+end handlerNames

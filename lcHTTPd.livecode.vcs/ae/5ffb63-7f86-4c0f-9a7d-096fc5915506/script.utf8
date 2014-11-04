@@ -1,0 +1,3 @@
+on mouseUp
+   send setDefaults to button "Server"
+end mouseUp

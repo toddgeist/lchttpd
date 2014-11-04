@@ -1,0 +1,62 @@
+local theHTTPStatus, theBody, theFirstLine, contentLength, theContentType, theSendNow
+
+
+on resetToDefaults
+   set theHttpStatus of me to 200
+   set the body of me to empty
+   set the contentType of me to "text/txt"
+   put empty into contentLength
+   put empty into theFirstLine
+   put false into theSendNow
+end resetToDefaults
+
+on sendMe
+   set the sendNow of me to true
+end sendMe
+
+setProp sendNow theValue
+   put theValue into theSendNow
+end sendNow
+
+getProp sendNow
+   return theSendNow
+end sendNow
+
+on send404
+   set the httpStatus of me to 404
+   sendMe
+end send404
+
+
+setProp contentType theValue
+   put theValue into contentType
+end contentType
+
+setProp body theValue
+   put theValue into theBody
+end body
+
+setProp httpStatus theValue
+   put theValue into theHTTPStatus
+   put "HTTP/1.1 " into line1
+   if theHTTPStatus = 200 then 
+      put "200 OK" after line1 
+   else if theHTTPStatus = 404 then
+      put "404 Not Found" after line1
+      set the body of me to "Not Found"
+   else
+      put "500 Internal Server Error" after line1
+      set the body of me to "Internal Server Error"
+   end if
+   put line1 into theFirstLine
+end httpStatus
+
+getProp responseString
+   put theFirstLine & crlf into theHeader
+   put "Content-Type: " & theContentType & crlf after theHeader
+   put "Connection: Close " & crlf after theHeader
+   put "Date: " & the date & the time & crlf after theHeader
+   put "Content-Length: " & length(theBody) & crlf after theHeader
+   return theHeader & crlf & theBody
+  
+end responseString
