@@ -51,14 +51,76 @@ On StartServer
    
 end StartServer
 
+
+
+
+
 on newConnection pSocket
    put pSocket into theSocket
    dispatch "setDefaults" to theRequest
    dispatch "resetToDefaults" to theResponse
-   read from socket theSocket for 1 lines with message "readFromSocket"
+   read from socket theSocket until crlf&crlf with message "handleRequest"
+   
+   
 end newConnection
 
 
+on handleRequest theIPAddress, theData
+   
+   split theIPAddress by ":"
+   set the IPAddress of theRequest to theIPAddress[1]
+   set the port of theRequest to theIPAddress[2]
+   set the method of theRequest to word 1 of theData
+   
+   put word 2 of theData into theReqInfo
+   split theReqInfo by "?"
+   put theReqInfo[1]into theRoute
+   put theReqInfo[2] into theQuery
+   put empty into theReqInfo
+   
+   split theQuery by "?" and "="
+   set the query of theRequest to theQuery
+   set the path of theRequest to theRoute
+   
+   split theRoute by "/"
+   combine theRoute with "."
+   put the method of theRequest & theRoute into theHandler
+   
+   put parseHeaders(theData) into theHeaders
+   set the headers of theRequest to theHeaders
+   
+   // if it is a POST or PUT we need to parse the body
+   if the method of theRequest = "POST" or the method of theRequest = "PUT" then
+      put theHeaders["Content-Type"] into theContentType
+      split theContentType with ";"
+      put theContentType[1] into theContentTypePart1
+      put theContentType[2] into theContentTypePart2
+      split theContentTypePart2 with "="
+      
+      if theContentTypePart1 = "multipart/form-data" then
+         put theContentTypePart2[2] & "--" into theBoundary
+         read from socket theSocket until theBoundary
+         put it into theBody
+         put theBody into theRawBody
+      else if theContentTypePart1 = "application/x-www-form-urlencoded" then
+         read from socket theSocket for theHeaders["Content-Length"]
+         put it into theBody
+         put theBody into theRawBody
+         split theBody by "?" and "="
+      else
+         read from socket theSockets for theHeaders["Content-Length"]
+         put it into theBody
+         put theBody into theRawBody
+      end if
+      set the body of theRequest to theBody
+      set the rawBody of theRequest to theRawBody
+   end if
+   
+   
+   invokeMiddleWareStack
+   sendResponse
+   
+end handleRequest
 
 
 
@@ -179,3 +241,28 @@ function handlerNames pScript,pHandlerType
         return pScript
     end if
 end handlerNames
+
+
+function parseHeaders theData
+   
+   put number of lines of theData into totalLines
+   put line 2 to totalLines of theData into theHeaders
+   split theHeaders by crlf and ":"
+   repeat for each key theHeader in theHeaders
+      if theHeaders[theHeader] is not empty then
+         put trim(theHeaders[theHeader]) into newHeaders[theHeader]
+      end if
+   end repeat
+   put newHeaders into theHeaders
+   put empty into newHeaders
+   
+   
+
+   return theHeaders
+end parseHeaders
+
+
+function trim theText
+   Put word 1 to -1 of theText into theText
+   return theText
+end trim

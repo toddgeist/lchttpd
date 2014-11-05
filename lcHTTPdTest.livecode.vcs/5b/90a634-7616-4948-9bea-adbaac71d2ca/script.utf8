@@ -17,17 +17,16 @@
 
 
 
-on GET.a.b.c theRequest, theResponse
-   
+on POST.a.b.c theRequest, theResponse
    
    put the query of theRequest into theQuery
+   put the body of theRequest into theBody
    
    set the httpStatus of theResponse to 200
    set the conteType of theResponse to "text/html"
-   set the body of theResponse to "hello " & theQuery["firstName"]
+   set the body of theResponse to "hello " & theBody["test"]
    
-   
-end GET.a.b.c
+end POST.a.b.c
 
 
 
